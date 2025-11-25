@@ -42,7 +42,7 @@ function is_admin() {
 // Fungsi redirect jika belum login
 function require_login() {
     if (!is_logged_in()) {
-        header("Location:login.php");
+        header("Location: login.php");
         exit();
     }
 }

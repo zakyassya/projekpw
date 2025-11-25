@@ -1,11 +1,15 @@
 <?php
-session_start(); // INI YANG HILANG NGAB! Tambah ini di atas
 
 include 'config.php'; // pastikan ini konek DB bener
 
-// Redirect kalau sudah login
-if (isset($_SESSION['user_id'])) {
+// Redirect kalau sudah login dan adalah admin
+if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     header("Location: admin/index.php");
+    exit();
+}
+// Kalau sudah login tapi bukan admin, redirect ke home
+else if (isset($_SESSION['user_id'])) {
+    header("Location: index.php");
     exit();
 }
 
