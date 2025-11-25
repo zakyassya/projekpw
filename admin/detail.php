@@ -160,11 +160,12 @@ if (!$data) exit("Data tidak ditemukan");
                 foreach ($data as $k => $v) {
                     if (in_array($k, ['id','user_id','nama_lengkap','created_at','status'])) continue;
                     if (str_starts_with($k, 'file_') && $v) {
-                        $path = "../uploads/" . basename($v);
+                        $filename = basename($v);
+                        $download_url = "download.php?file=" . urlencode($filename);
                         echo "<div class='info-row'>
                             <div class='info-label'>" . ucwords(str_replace('_',' ',$k)) . "</div>
                             <div class='info-value'>
-                                <a href='$path' target='_blank' class='file-link'>
+                                <a href='$download_url' class='file-link'>
                                     <i class='bi bi-file-earmark-arrow-down'></i>
                                     Unduh File
                                 </a>
