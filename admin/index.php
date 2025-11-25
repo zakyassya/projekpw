@@ -26,17 +26,17 @@ if (!is_admin()) {
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .admin-navbar {
-            background: white;
-            border-bottom: 3px solid #667eea;
+            background: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 25px;
         }
-        .admin-navbar .navbar-brand { font-size: 1.5rem; font-weight: 600; color: #667eea; }
+        .admin-navbar .navbar-brand { font-size: 1.5rem; font-weight: 600; color: white; }
         .admin-container { padding: 25px; }
         .admin-card {
             background: white;
@@ -45,7 +45,7 @@ if (!is_admin()) {
             border: none;
         }
         .admin-card-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             border-radius: 12px 12px 0 0;
             padding: 20px;
@@ -60,9 +60,9 @@ if (!is_admin()) {
         }
         .table thead th {
             background: #f8f9fa;
-            color: #667eea;
+            color: #0d6efd;
             font-weight: 600;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid #0d6efd;
             padding: 12px;
         }
         .table tbody td {
@@ -97,18 +97,18 @@ if (!is_admin()) {
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .top-bar h4 { margin: 0; color: #667eea; }
+        .top-bar h4 { margin: 0; color: #0d6efd; }
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
         .btn-logout {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             border: none;
             color: white;
         }
-        .btn-logout:hover { opacity: 0.9; color: white; }
+        .btn-logout:hover { background: #0b5ed7; color: white; }
     </style>
 </head>
 <body>
@@ -191,7 +191,7 @@ if (!is_admin()) {
 
                                     echo "<tr>
                                         <td><strong>$no</strong></td>
-                                        <td><span class='fw-bold' style='color: #667eea;'>$nama</span></td>
+                                        <td><span class='fw-bold' style='color: #0d6efd;'>$nama</span></td>
                                         <td>" . htmlspecialchars($row['nama_lengkap'] ?? 'User dihapus') . "</td>
                                         <td>" . date('d-m-Y H:i', strtotime($row['created_at'])) . "</td>
                                         <td><span class='badge badge-status $badge_class'>".ucfirst($status)."</span></td>

@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 25px;
@@ -112,7 +112,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             overflow: hidden;
         }
         .form-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             padding: 30px;
             text-align: center;
@@ -124,7 +124,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             margin-bottom: 30px;
         }
         .form-section h5 {
-            color: #667eea;
+            color: #0d6efd;
             font-weight: 600;
             margin-bottom: 15px;
             padding-bottom: 10px;
@@ -145,7 +145,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             transition: all 0.3s;
         }
         .form-control:focus {
-            border-color: #667eea;
+            border-color: #0d6efd;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
         .form-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
@@ -158,7 +158,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             .form-row { grid-template-columns: 1fr; }
         }
         .btn-submit {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -174,7 +174,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         .btn-back {
             background: #f8f9fa;
-            color: #667eea;
+            color: #0d6efd;
             border: 1px solid #ddd;
             padding: 10px 20px;
             border-radius: 8px;
@@ -186,7 +186,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         .btn-back:hover {
             background: #e9ecef;
-            color: #667eea;
+            color: #0d6efd;
             text-decoration: none;
         }
         .alert-success {
@@ -216,7 +216,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             display: block;
             padding: 12px 15px;
             background: #f8f9fa;
-            border: 2px dashed #667eea;
+            border: 2px dashed #0d6efd;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
@@ -224,7 +224,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         .file-upload-label:hover {
             background: #e9ecef;
-            border-color: #764ba2;
+            border-color: #0d6efd;
         }
         .file-upload-label i { margin-right: 8px; }
         .form-body input[type="file"] { display: none; }

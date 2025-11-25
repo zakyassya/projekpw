@@ -27,7 +27,7 @@ if (!$data) exit("Data tidak ditemukan");
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 25px;
@@ -41,7 +41,7 @@ if (!$data) exit("Data tidak ditemukan");
             overflow: hidden;
         }
         .detail-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             padding: 25px;
             display: flex;
@@ -56,7 +56,7 @@ if (!$data) exit("Data tidak ditemukan");
             border-bottom: 2px solid #f0f0f0;
         }
         .info-section h5 {
-            color: #667eea;
+            color: #0d6efd;
             font-weight: 600;
             margin-bottom: 15px;
         }
@@ -80,20 +80,20 @@ if (!$data) exit("Data tidak ditemukan");
             gap: 8px;
             padding: 8px 15px;
             background: #f0f7ff;
-            border: 1px solid #667eea;
+            border: 1px solid #0d6efd;
             border-radius: 6px;
-            color: #667eea;
+            color: #0d6efd;
             text-decoration: none;
             transition: all 0.3s;
         }
         .file-link:hover {
-            background: #667eea;
+            background: #0d6efd;
             color: white;
             text-decoration: none;
         }
         .btn-back {
             background: #f8f9fa;
-            color: #667eea;
+            color: #0d6efd;
             border: 1px solid #ddd;
             padding: 10px 20px;
             border-radius: 8px;
@@ -105,11 +105,11 @@ if (!$data) exit("Data tidak ditemukan");
         }
         .btn-back:hover {
             background: #e9ecef;
-            color: #667eea;
+            color: #0d6efd;
             text-decoration: none;
         }
         .btn-edit {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -120,7 +120,7 @@ if (!$data) exit("Data tidak ditemukan");
             gap: 8px;
         }
         .btn-edit:hover {
-            opacity: 0.95;
+            background: #0b5ed7;
             color: white;
         }
         @media (max-width: 768px) {

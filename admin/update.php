@@ -41,7 +41,7 @@ $row = mysqli_fetch_assoc($res);
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 25px;
@@ -55,7 +55,7 @@ $row = mysqli_fetch_assoc($res);
             overflow: hidden;
         }
         .update-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             padding: 25px;
             text-align: center;
@@ -79,12 +79,12 @@ $row = mysqli_fetch_assoc($res);
             transition: all 0.3s;
         }
         .form-select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
         }
         .status-info {
             background: #f8f9fa;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0d6efd;
             padding: 12px;
             border-radius: 4px;
             margin-bottom: 20px;
@@ -92,7 +92,7 @@ $row = mysqli_fetch_assoc($res);
             color: #666;
         }
         .btn-submit {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0d6efd;
             color: white;
             border: none;
             padding: 12px 25px;
@@ -103,13 +103,12 @@ $row = mysqli_fetch_assoc($res);
             margin-bottom: 10px;
         }
         .btn-submit:hover {
-            opacity: 0.95;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            background: #0b5ed7;
             color: white;
         }
         .btn-back {
             background: #f8f9fa;
-            color: #667eea;
+            color: #0d6efd;
             border: 1px solid #ddd;
             padding: 12px 25px;
             border-radius: 8px;
@@ -120,7 +119,7 @@ $row = mysqli_fetch_assoc($res);
         }
         .btn-back:hover {
             background: #e9ecef;
-            color: #667eea;
+            color: #0d6efd;
             text-decoration: none;
         }
         .status-badge {
