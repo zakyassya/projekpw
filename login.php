@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
-        if (mysqli_num_rows($result) === 1) {
+        if ($result && mysqli_num_rows($result) === 1) {
             $user = mysqli_fetch_assoc($result);
 
             $login_berhasil = false;
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Cek apakah password sudah di-hash (bcrypt)
             if (password_verify($password, $user['password'])) {
                 $login_berhasil = true;
-            } 
+            }
             // Kalau belum di-hash (masih plain text / md5 lama), cek langsung
             else if ($user['password'] === $password || $user['password'] === md5($password)) {
                 $login_berhasil = true;
@@ -58,10 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['nama_lengkap']  = $user['nama_lengkap'];
                 $_SESSION['role']          = $user['role'];
 
-                // Debug sementara: Cek session ke-set (hapus nanti)
-                // var_dump($_SESSION); exit();
-
-                header("Location: admin/index.php");
+                // Redirect sesuai role
+                if ($_SESSION['role'] === 'admin') {
+                    header("Location: admin/index.php");
+                } else {
+                    header("Location: index.php");
+                }
                 exit();
             } else {
                 $error = "Password salah!";
@@ -70,98 +72,138 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = "Username atau Email tidak ditemukan!";
         }
 
-        mysqli_stmt_close($stmt);
+        if ($stmt) mysqli_stmt_close($stmt);
     }
 }
 
 // Close conn kalau perlu (opsional, tapi bagus)
-mysqli_close($conn);
+// mysqli_close($conn); // biarkan terbuka jika halaman lain butuh koneksi
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Kecamatan Digital</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body{background: linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-        .login-card{background:white;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);overflow:hidden}
-        .login-left{padding:40px}
-        .login-right{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:50px}
-        .logo-circle{width:80px;height:80px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 20px;color:white}
-        .btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);border:none;padding:12px 0;font-weight:600}
-        .btn-primary:hover{opacity:.9;transform:translateY(-2px)}
+    .divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="login-card">
-            <div class="row g-0">
-                <div class="col-md-6">
-                    <div class="login-left">
-                        <div class="logo-circle">🏛️</div>
-                        <h2 class="text-center mb-2">Login</h2>
-                        <p class="text-center text-muted mb-4">Kecamatan Kita</p>
+    
+    <section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="uploads/foto/undraw_town_oesm.svg"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <!-- Error Alert -->
+        <?php if ($error): ?>
+          <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            <strong>Error!</strong> <?= htmlspecialchars($error) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
 
-                        <?php if ($error): ?>
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                <i class="bi bi-exclamation-triangle-fill"></i> <?= $error ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        <?php endif; ?>
+        <form method="POST" action="">
+          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
+            <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
+              <i class="fab fa-facebook-f"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
+              <i class="fab fa-linkedin-in"></i>
+            </button>
+          </div>
 
-                        <form method="POST" action="">
-                            <div class="mb-3">
-                                <label class="form-label">Username atau Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" class="form-control" name="email_or_username" placeholder="Masukkan username atau email" required autofocus>
-                                </div>
-                            </div>
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0">Or</p>
+          </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Password</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" class="form-control" name="password" placeholder="Masukkan password" required>
-                                </div>
-                            </div>
+          <!-- Email/Username input -->
+          <div class="form-outline mb-4">
+            <input type="text" id="form3Example3" name="email_or_username" class="form-control form-control-lg"
+              placeholder="Enter username or email address" required autofocus
+              value="<?= htmlspecialchars($_POST['email_or_username'] ?? '') ?>" />
+            <label class="form-label" for="form3Example3">Email address or Username</label>
+          </div>
 
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label" for="remember">Ingat Saya</label>
-                            </div>
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <input type="password" id="form3Example4" name="password" class="form-control form-control-lg"
+              placeholder="Enter password" required />
+            <label class="form-label" for="form3Example4">Password</label>
+          </div>
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-box-arrow-in-right"></i> Masuk
-                            </button>
-
-                            <div class="text-center mt-3">
-                                <span class="text-muted">Belum punya akun?</span>
-                                <a href="register.php" class="text-decoration-none fw-bold"> Daftar di sini</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="login-right text-center">
-                        <h3 class="mb-4">Selamat Datang!</h3>
-                        <p>Akses layanan administrasi kependudukan dengan mudah dan cepat</p>
-                        <ul class="list-unstyled mt-4">
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Pengajuan dokumen online</li>
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Tracking status permohonan</li>
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Notifikasi real-time</li>
-                            <li class="mb-3"><i class="bi bi-check-circle-fill text-success"></i> Proses cepat & transparan</li>
-                        </ul>
-                    </div>
-                </div>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Checkbox -->
+            <div class="form-check mb-0">
+              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+              <label class="form-check-label" for="form2Example3">
+                Remember me
+              </label>
             </div>
-        </div>
+            <a href="#!" class="text-body">Forgot password?</a>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="register.php" class="link-danger">Register</a></p>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  <div
+    class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+    <!-- Copyright -->
+    <div class="text-white mb-3 mb-md-0">
+      Copyright © 2020. All rights reserved.
+    </div>
+    <!-- Copyright -->
+
+    <!-- Right -->
+    <div>
+      <a href="#!" class="text-white me-4">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="#!" class="text-white me-4">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="#!" class="text-white me-4">
+        <i class="fab fa-google"></i>
+      </a>
+      <a href="#!" class="text-white">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+    </div>
+    <!-- Right -->
+  </div>
+</section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

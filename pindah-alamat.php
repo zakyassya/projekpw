@@ -92,114 +92,301 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pengajuan Surat Pindah Alamat - Kecamatan Digital</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-.card-container {
-    max-width: 800px;
-    width: 100%;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    padding: 30px;
-}
-input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border:1px solid #ccc;
-}
-button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-button:hover {opacity:0.9;}
-.alert-success {background:#e6ffed;border:1px solid #46a069;}
-.alert-error {background:#ffe6e6;border:1px solid #d34747;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengajuan Surat Pindah Alamat - Kecamatan Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 25px;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .form-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .form-header h2 { margin: 0; font-weight: 600; font-size: 1.8rem; }
+        .form-header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
+        .form-body { padding: 30px; }
+        .form-section { margin-bottom: 30px; }
+        .form-section h5 {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .form-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover {
+            opacity: 0.95;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        .btn-back {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-back:hover {
+            background: #e9ecef;
+            color: #667eea;
+            text-decoration: none;
+        }
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .alert-danger ul { margin: 0; padding-left: 20px; }
+        .required { color: #dc3545; }
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-upload-label {
+            display: block;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-upload-label:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+        .file-upload-label i { margin-right: 8px; }
+        .form-body input[type="file"] { display: none; }
+    </style>
 </head>
 <body>
-<div class="card-container">
-    <h2 class="mb-4 text-center">Form Pengajuan Surat Pindah Alamat</h2>
-
-    <?php if($pesan): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($pesan) ?></div>
-    <?php endif; ?>
-
-    <?php if($errors): ?>
-        <div class="alert alert-error">
-            <ul class="mb-0">
-                <?php foreach($errors as $e): ?>
-                    <li><?= htmlspecialchars($e) ?></li>
-                <?php endforeach; ?>
-            </ul>
+    <div class="form-container">
+        <div class="form-header">
+            <h2><i class="bi bi-arrow-left-right me-3"></i>Pengajuan Surat Pindah Alamat</h2>
+            <p>Lengkapi data untuk permohonan surat pindah alamat</p>
         </div>
-    <?php endif; ?>
 
-    <form method="POST" enctype="multipart/form-data" novalidate>
-        <label>NIK</label>
-        <input type="text" name="nik" value="<?= isset($_POST['nik'])?htmlspecialchars($_POST['nik']):'' ?>">
+        <div class="form-body">
+            <?php if($pesan): ?>
+                <div class="alert-success">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <strong>Berhasil!</strong> <?= htmlspecialchars($pesan) ?>
+                </div>
+            <?php endif; ?>
 
-        <label>No. KK</label>
-        <input type="text" name="no_kk" value="<?= isset($_POST['no_kk'])?htmlspecialchars($_POST['no_kk']):'' ?>">
+            <?php if($errors): ?>
+                <div class="alert-danger">
+                    <strong><i class="bi bi-exclamation-circle me-2"></i>Ada kesalahan:</strong>
+                    <ul>
+                        <?php foreach($errors as $error): ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
 
-        <label>Nama</label>
-        <input type="text" name="nama" value="<?= isset($_POST['nama'])?htmlspecialchars($_POST['nama']):'' ?>">
+            <form method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-section">
+                    <h5><i class="bi bi-person me-2"></i>Data Pribadi</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NIK <span class="required">*</span></label>
+                            <input type="text" name="nik" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nik'] ?? '') ?>" 
+                                placeholder="16 digit NIK">
+                        </div>
+                        <div class="form-group">
+                            <label>No. KK <span class="required">*</span></label>
+                            <input type="text" name="no_kk" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['no_kk'] ?? '') ?>" 
+                                placeholder="16 digit KK">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama <span class="required">*</span></label>
+                        <input type="text" name="nama" class="form-control" required 
+                            value="<?= htmlspecialchars($_POST['nama'] ?? '') ?>" 
+                            placeholder="Nama lengkap">
+                    </div>
+                </div>
 
-        <label>Alamat Asal</label>
-        <textarea name="alamat_asal"><?= isset($_POST['alamat_asal'])?htmlspecialchars($_POST['alamat_asal']):'' ?></textarea>
+                <div class="form-section">
+                    <h5><i class="bi bi-arrow-left-right me-2"></i>Alamat Pindah</h5>
+                    <div class="form-group">
+                        <label>Alamat Asal <span class="required">*</span></label>
+                        <textarea name="alamat_asal" class="form-control" rows="3" required 
+                            placeholder="Alamat rumah sebelumnya"><?= htmlspecialchars($_POST['alamat_asal'] ?? '') ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Tujuan <span class="required">*</span></label>
+                        <textarea name="alamat_tujuan" class="form-control" rows="3" required 
+                            placeholder="Alamat rumah baru"><?= htmlspecialchars($_POST['alamat_tujuan'] ?? '') ?></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>RT Tujuan <span class="required">*</span></label>
+                            <input type="text" name="rt_tujuan" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['rt_tujuan'] ?? '') ?>" 
+                                placeholder="00">
+                        </div>
+                        <div class="form-group">
+                            <label>RW Tujuan <span class="required">*</span></label>
+                            <input type="text" name="rw_tujuan" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['rw_tujuan'] ?? '') ?>" 
+                                placeholder="00">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kelurahan Tujuan <span class="required">*</span></label>
+                            <input type="text" name="kelurahan_tujuan" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['kelurahan_tujuan'] ?? '') ?>" 
+                                placeholder="Nama kelurahan">
+                        </div>
+                        <div class="form-group">
+                            <label>Kecamatan Tujuan <span class="required">*</span></label>
+                            <input type="text" name="kecamatan_tujuan" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['kecamatan_tujuan'] ?? '') ?>" 
+                                placeholder="Nama kecamatan">
+                        </div>
+                    </div>
+                </div>
 
-        <label>Alamat Tujuan</label>
-        <textarea name="alamat_tujuan"><?= isset($_POST['alamat_tujuan'])?htmlspecialchars($_POST['alamat_tujuan']):'' ?></textarea>
+                <div class="form-section">
+                    <h5><i class="bi bi-chat-dots me-2"></i>Alasan & Kontak</h5>
+                    <div class="form-group">
+                        <label>Alasan Pindah <span class="required">*</span></label>
+                        <textarea name="alasan_pindah" class="form-control" rows="3" required 
+                            placeholder="Jelaskan alasan pindah alamat"><?= htmlspecialchars($_POST['alasan_pindah'] ?? '') ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telepon <span class="required">*</span></label>
+                        <input type="tel" name="telepon" class="form-control" required 
+                            value="<?= htmlspecialchars($_POST['telepon'] ?? '') ?>" 
+                            placeholder="0812345678">
+                    </div>
+                </div>
 
-        <label>RT Tujuan</label>
-        <input type="text" name="rt_tujuan" value="<?= isset($_POST['rt_tujuan'])?htmlspecialchars($_POST['rt_tujuan']):'' ?>">
+                <div class="form-section">
+                    <h5><i class="bi bi-file-earmark-arrow-up me-2"></i>Upload Dokumen</h5>
+                    <div class="form-group">
+                        <label for="file_ktp">KTP <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_ktp" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_ktp" name="file_ktp" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
 
-        <label>RW Tujuan</label>
-        <input type="text" name="rw_tujuan" value="<?= isset($_POST['rw_tujuan'])?htmlspecialchars($_POST['rw_tujuan']):'' ?>">
+                    <div class="form-group">
+                        <label for="file_kk">Kartu Keluarga <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_kk" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_kk" name="file_kk" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
 
-        <label>Kelurahan Tujuan</label>
-        <input type="text" name="kelurahan_tujuan" value="<?= isset($_POST['kelurahan_tujuan'])?htmlspecialchars($_POST['kelurahan_tujuan']):'' ?>">
+                    <div class="form-group">
+                        <label for="file_surat_pengantar">Surat Pengantar <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_surat_pengantar" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_surat_pengantar" name="file_surat_pengantar" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
+                </div>
 
-        <label>Kecamatan Tujuan</label>
-        <input type="text" name="kecamatan_tujuan" value="<?= isset($_POST['kecamatan_tujuan'])?htmlspecialchars($_POST['kecamatan_tujuan']):'' ?>">
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn-submit">
+                        <i class="bi bi-check-circle me-2"></i>Ajukan Surat Pindah
+                    </button>
+                    <a href="index.php" class="btn-back">
+                        <i class="bi bi-arrow-left"></i>Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <label>Alasan Pindah</label>
-        <textarea name="alasan_pindah"><?= isset($_POST['alasan_pindah'])?htmlspecialchars($_POST['alasan_pindah']):'' ?></textarea>
-
-        <label>Telepon</label>
-        <input type="text" name="telepon" value="<?= isset($_POST['telepon'])?htmlspecialchars($_POST['telepon']):'' ?>">
-
-        <label>Upload KTP (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_ktp" accept=".jpg,.jpeg,.png,.pdf">
-
-        <label>Upload KK (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_kk" accept=".jpg,.jpeg,.png,.pdf">
-
-        <label>Upload Surat Pengantar (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_surat_pengantar" accept=".jpg,.jpeg,.png,.pdf">
-
-        <button type="submit" class="mt-3 w-100">Ajukan Surat Pindah Alamat</button>
-    </form>
-
-    <p class="mt-3 text-center"><a href="index.php">← Kembali ke Dashboard</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

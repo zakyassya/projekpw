@@ -95,121 +95,323 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pengajuan Akta Kelahiran - Kecamatan Digital</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-.card-container {
-    max-width: 800px;
-    width: 100%;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    padding: 30px;
-}
-input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border:1px solid #ccc;
-}
-button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-button:hover {opacity:0.9;}
-.alert-success {background:#e6ffed;border:1px solid #46a069;}
-.alert-error {background:#ffe6e6;border:1px solid #d34747;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengajuan Akta Kelahiran - Kecamatan Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 25px;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .form-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .form-header h2 { margin: 0; font-weight: 600; font-size: 1.8rem; }
+        .form-header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
+        .form-body { padding: 30px; }
+        .form-section { margin-bottom: 30px; }
+        .form-section h5 {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .form-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover {
+            opacity: 0.95;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        .btn-back {
+            background: #f8f9fa;
+            color: #667eea;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-back:hover {
+            background: #e9ecef;
+            color: #667eea;
+            text-decoration: none;
+        }
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        .alert-danger ul { margin: 0; padding-left: 20px; }
+        .required { color: #dc3545; }
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-upload-label {
+            display: block;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-upload-label:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+        .file-upload-label i { margin-right: 8px; }
+        .form-body input[type="file"] { display: none; }
+    </style>
 </head>
 <body>
-<div class="card-container">
-    <h2 class="mb-4 text-center">Form Pengajuan Akta Kelahiran</h2>
-
-    <?php if($pesan): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($pesan) ?></div>
-    <?php endif; ?>
-
-    <?php if($errors): ?>
-        <div class="alert alert-error">
-            <ul class="mb-0">
-                <?php foreach($errors as $e): ?>
-                    <li><?= htmlspecialchars($e) ?></li>
-                <?php endforeach; ?>
-            </ul>
+    <div class="form-container">
+        <div class="form-header">
+            <h2><i class="bi bi-file-earmark me-3"></i>Pengajuan Akta Kelahiran</h2>
+            <p>Lengkapi data anak untuk pembuatan akta kelahiran</p>
         </div>
-    <?php endif; ?>
 
-    <form method="POST" enctype="multipart/form-data" novalidate>
-        <label>Nama Anak</label>
-        <input type="text" name="nama_anak" value="<?= isset($_POST['nama_anak'])?htmlspecialchars($_POST['nama_anak']):'' ?>">
+        <div class="form-body">
+            <?php if($pesan): ?>
+                <div class="alert-success">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <strong>Berhasil!</strong> <?= htmlspecialchars($pesan) ?>
+                </div>
+            <?php endif; ?>
 
-        <label>Tempat Lahir</label>
-        <input type="text" name="tempat_lahir" value="<?= isset($_POST['tempat_lahir'])?htmlspecialchars($_POST['tempat_lahir']):'' ?>">
+            <?php if($errors): ?>
+                <div class="alert-danger">
+                    <strong><i class="bi bi-exclamation-circle me-2"></i>Ada kesalahan:</strong>
+                    <ul>
+                        <?php foreach($errors as $error): ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
 
-        <label>Tanggal Lahir</label>
-        <input type="date" name="tanggal_lahir" value="<?= isset($_POST['tanggal_lahir'])?htmlspecialchars($_POST['tanggal_lahir']):'' ?>">
+            <form method="POST" enctype="multipart/form-data" novalidate>
+                <div class="form-section">
+                    <h5><i class="bi bi-person-badge me-2"></i>Data Anak</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Anak <span class="required">*</span></label>
+                            <input type="text" name="nama_anak" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nama_anak'] ?? '') ?>" 
+                                placeholder="Nama lengkap anak">
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Kelamin <span class="required">*</span></label>
+                            <select name="jenis_kelamin" class="form-control" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="L" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='L') ? 'selected' : '' ?>>Laki-laki</option>
+                                <option value="P" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='P') ? 'selected' : '' ?>>Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-        <label>Jenis Kelamin</label>
-        <select name="jenis_kelamin">
-            <option value="">--Pilih--</option>
-            <option value="L" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='L')?'selected':'' ?>>Laki-laki</option>
-            <option value="P" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='P')?'selected':'' ?>>Perempuan</option>
-        </select>
+                <div class="form-section">
+                    <h5><i class="bi bi-calendar me-2"></i>Data Kelahiran</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tempat Lahir <span class="required">*</span></label>
+                            <input type="text" name="tempat_lahir" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['tempat_lahir'] ?? '') ?>" 
+                                placeholder="Kota/Kabupaten">
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Lahir <span class="required">*</span></label>
+                            <input type="date" name="tanggal_lahir" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['tanggal_lahir'] ?? '') ?>">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Anak Ke <span class="required">*</span></label>
+                            <input type="number" name="anak_ke" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['anak_ke'] ?? '') ?>" 
+                                placeholder="1, 2, 3, dst">
+                        </div>
+                    </div>
+                </div>
 
-        <label>Anak Ke</label>
-        <input type="number" name="anak_ke" value="<?= isset($_POST['anak_ke'])?htmlspecialchars($_POST['anak_ke']):'' ?>">
+                <div class="form-section">
+                    <h5><i class="bi bi-people me-2"></i>Data Orang Tua</h5>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Ayah <span class="required">*</span></label>
+                            <input type="text" name="nama_ayah" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nama_ayah'] ?? '') ?>" 
+                                placeholder="Nama lengkap ayah">
+                        </div>
+                        <div class="form-group">
+                            <label>NIK Ayah <span class="required">*</span></label>
+                            <input type="text" name="nik_ayah" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nik_ayah'] ?? '') ?>" 
+                                placeholder="16 digit NIK">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Ibu <span class="required">*</span></label>
+                            <input type="text" name="nama_ibu" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nama_ibu'] ?? '') ?>" 
+                                placeholder="Nama lengkap ibu">
+                        </div>
+                        <div class="form-group">
+                            <label>NIK Ibu <span class="required">*</span></label>
+                            <input type="text" name="nik_ibu" class="form-control" required 
+                                value="<?= htmlspecialchars($_POST['nik_ibu'] ?? '') ?>" 
+                                placeholder="16 digit NIK">
+                        </div>
+                    </div>
+                </div>
 
-        <label>Nama Ayah</label>
-        <input type="text" name="nama_ayah" value="<?= isset($_POST['nama_ayah'])?htmlspecialchars($_POST['nama_ayah']):'' ?>">
+                <div class="form-section">
+                    <h5><i class="bi bi-house me-2"></i>Alamat & Kontak</h5>
+                    <div class="form-group">
+                        <label>Alamat <span class="required">*</span></label>
+                        <textarea name="alamat" class="form-control" rows="3" required 
+                            placeholder="Jl. / No. RT/RW / Desa / Kota"><?= htmlspecialchars($_POST['alamat'] ?? '') ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>No. Telepon <span class="required">*</span></label>
+                        <input type="tel" name="telepon" class="form-control" required 
+                            value="<?= htmlspecialchars($_POST['telepon'] ?? '') ?>" 
+                            placeholder="0812345678">
+                    </div>
+                </div>
 
-        <label>NIK Ayah</label>
-        <input type="text" name="nik_ayah" value="<?= isset($_POST['nik_ayah'])?htmlspecialchars($_POST['nik_ayah']):'' ?>">
+                <div class="form-section">
+                    <h5><i class="bi bi-file-earmark-arrow-up me-2"></i>Upload Dokumen</h5>
+                    <div class="form-group">
+                        <label for="file_surat_lahir">Surat Kelahiran <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_surat_lahir" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_surat_lahir" name="file_surat_lahir" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
 
-        <label>Nama Ibu</label>
-        <input type="text" name="nama_ibu" value="<?= isset($_POST['nama_ibu'])?htmlspecialchars($_POST['nama_ibu']):'' ?>">
+                    <div class="form-group">
+                        <label for="file_kk">Kartu Keluarga <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_kk" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_kk" name="file_kk" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
 
-        <label>NIK Ibu</label>
-        <input type="text" name="nik_ibu" value="<?= isset($_POST['nik_ibu'])?htmlspecialchars($_POST['nik_ibu']):'' ?>">
+                    <div class="form-group">
+                        <label for="file_ktp_ortu">KTP Orang Tua <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_ktp_ortu" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_ktp_ortu" name="file_ktp_ortu" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
 
-        <label>Alamat</label>
-        <textarea name="alamat"><?= isset($_POST['alamat'])?htmlspecialchars($_POST['alamat']):'' ?></textarea>
+                    <div class="form-group">
+                        <label for="file_surat_nikah">Surat Nikah Orang Tua <span class="required">*</span></label>
+                        <div class="file-upload-wrapper">
+                            <label for="file_surat_nikah" class="file-upload-label">
+                                <i class="bi bi-cloud-arrow-up"></i>
+                                <span>Klik untuk upload (JPG, PNG, PDF - Max 2MB)</span>
+                            </label>
+                            <input type="file" id="file_surat_nikah" name="file_surat_nikah" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </div>
+                </div>
 
-        <label>Telepon</label>
-        <input type="text" name="telepon" value="<?= isset($_POST['telepon'])?htmlspecialchars($_POST['telepon']):'' ?>">
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn-submit">
+                        <i class="bi bi-check-circle me-2"></i>Ajukan Akta Kelahiran
+                    </button>
+                    <a href="index.php" class="btn-back">
+                        <i class="bi bi-arrow-left"></i>Kembali
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <label>Upload Surat Kelahiran (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_surat_lahir" accept=".jpg,.jpeg,.png,.pdf">
-
-        <label>Upload KK (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_kk" accept=".jpg,.jpeg,.png,.pdf">
-
-        <label>Upload KTP Orang Tua (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_ktp_ortu" accept=".jpg,.jpeg,.png,.pdf">
-
-        <label>Upload Surat Nikah (jpg,jpeg,png,pdf | max 2MB)</label>
-        <input type="file" name="file_surat_nikah" accept=".jpg,.jpeg,.png,.pdf">
-
-        <button type="submit" class="mt-3 w-100">Ajukan Akta Kelahiran</button>
-    </form>
-
-    <p class="mt-3 text-center"><a href="index.php">← Kembali ke Dashboard</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

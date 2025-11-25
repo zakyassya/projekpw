@@ -1,5 +1,5 @@
 <?php
-include 'php/config.php';
+include 'config.php';
 
 $error = '';
 $success = '';
@@ -53,111 +53,113 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi - Kecamatan Digital</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .register-container {
-            max-width: 500px;
-            width: 100%;
-        }
-        .register-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            padding: 40px;
-        }
-        .logo-circle {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin: 0 auto 20px;
-            color: white;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-        }
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        section { min-height: 100vh; display: flex; flex-direction: column; }
+        .container-fluid { flex: 1; }
+        .h-custom { height: calc(100% - 73px); }
+        @media (max-width: 450px) { .h-custom { height: 100%; } }
+        img.img-fluid { max-height: 400px; object-fit: contain; }
     </style>
 </head>
 <body>
-    <div class="register-container">
-        <div class="register-card">
-            <div class="logo-circle">🏛️</div>
-            <h2 class="text-center mb-2">Registrasi Akun</h2>
-            <p class="text-center text-muted mb-4">Kecamatan Digital</p>
-            
-            <?php if ($error): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $error; ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <section>
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <!-- Gambar kiri -->
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="uploads/foto/undraw_town_oesm.svg"
+                        class="img-fluid" alt="Registration illustration">
                 </div>
-            <?php endif; ?>
-            
-            <?php if ($success): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill"></i> <?php echo $success; ?>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+                <!-- Form kanan -->
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <!-- Error Alert -->
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                            <strong>Error!</strong> <?= htmlspecialchars($error) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Success Alert -->
+                    <?php if ($success): ?>
+                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <strong>Sukses!</strong> <?= htmlspecialchars($success) ?>
+                            <a href="login.php" class="alert-link">Klik di sini untuk login</a>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Registration Form -->
+                    <form method="POST" action="">
+                        <h3 class="mb-4">Buat Akun Baru</h3>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="username" name="username" class="form-control form-control-lg"
+                                placeholder="Pilih username unik" required autofocus />
+                            <label class="form-label" for="username">Username</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control form-control-lg"
+                                placeholder="Masukkan nama lengkap" required />
+                            <label class="form-label" for="nama_lengkap">Nama Lengkap</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="email" id="email" name="email" class="form-control form-control-lg"
+                                placeholder="Masukkan email aktif" />
+                            <label class="form-label" for="email">Email (Opsional)</label>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="password" id="password" name="password" class="form-control form-control-lg"
+                                placeholder="Minimal 6 karakter" required />
+                            <label class="form-label" for="password">Password</label>
+                            <small class="text-muted d-block mt-1">Minimum 6 karakter</small>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-lg"
+                                placeholder="Ketik ulang password" required />
+                            <label class="form-label" for="confirm_password">Konfirmasi Password</label>
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg w-100" style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                                <i class="bi bi-person-plus me-2"></i>Daftar Sekarang
+                            </button>
+                            <p class="small fw-bold mt-2 pt-1 mb-0">
+                                Sudah punya akun? <a href="login.php" class="link-primary">Login di sini</a>
+                            </p>
+                        </div>
+                    </form>
                 </div>
-            <?php endif; ?>
-            
-            <form method="POST" action="">
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-control" name="username" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" name="nama_lengkap" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email">
-                </div>
-                
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" required>
-                    <small class="text-muted">Minimal 6 karakter</small>
-                </div>
-                
-                <div class="mb-4">
-                    <label class="form-label">Konfirmasi Password</label>
-                    <input type="password" class="form-control" name="confirm_password" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary w-100 mb-3">
-                    <i class="bi bi-person-plus"></i> Daftar
-                </button>
-                
-                <div class="text-center">
-                    <span class="text-muted">Sudah punya akun?</span>
-                    <a href="login.php" class="text-decoration-none">Login di sini</a>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-    
+
+        <!-- Footer -->
+        <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+            <div class="text-white mb-3 mb-md-0">
+                Copyright © 2020. All rights reserved.
+            </div>
+            <div>
+                <a href="#!" class="text-white me-4"><i class="fab fa-facebook-f"></i></a>
+                <a href="#!" class="text-white me-4"><i class="fab fa-twitter"></i></a>
+                <a href="#!" class="text-white me-4"><i class="fab fa-google"></i></a>
+                <a href="#!" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
