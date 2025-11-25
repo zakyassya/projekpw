@@ -18,7 +18,7 @@ if (!is_admin()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Kecamatan Digital</title>
+    <title>Admin Dashboard - Kecamatan Kami</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -118,7 +118,7 @@ if (!is_admin()) {
             <div class="d-flex align-items-center gap-3">
                 <span style="font-size: 1.8rem;">🏛️</span>
                 <div>
-                    <div class="navbar-brand mb-0">Kecamatan Digital</div>
+                    <div class="navbar-brand mb-0">Kecamatan Kami</div>
                     <small class="text-muted">Admin Dashboard</small>
                 </div>
             </div>

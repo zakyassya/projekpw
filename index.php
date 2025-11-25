@@ -21,27 +21,33 @@ if (!$result_kk) {
     $kk = isset($row['total']) ? $row['total'] : 0;
 }
 
-$sql_layanan = "SELECT 
-    (SELECT COUNT(*) FROM pengajuan_ktp WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) +
-    (SELECT COUNT(*) FROM pengajuan_kk WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) +
-    (SELECT COUNT(*) FROM pengajuan_akta WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) +
-    (SELECT COUNT(*) FROM pengajuan_pindah WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) +
-    (SELECT COUNT(*) FROM pengajuan_domisili WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) +
-    (SELECT COUNT(*) FROM pengajuan_usaha WHERE MONTH(created_at) = MONTH(CURRENT_DATE)) as total";
-$result_layanan = mysqli_query($conn, $sql_layanan);
-if (!$result_layanan) {
-    $layanan = 0;
-} else {
-    $row = mysqli_fetch_assoc($result_layanan);
-    $layanan = isset($row['total']) ? $row['total'] : 0;
-}
+// Ambil data per jenis layanan
+$sql_ktp = "SELECT COUNT(*) as total FROM pengajuan_ktp";
+$result_ktp = mysqli_query($conn, $sql_ktp);
+$ktp_count = mysqli_fetch_assoc($result_ktp)['total'] ?? 0;
+
+$sql_domisili = "SELECT COUNT(*) as total FROM pengajuan_domisili";
+$result_domisili = mysqli_query($conn, $sql_domisili);
+$domisili_count = mysqli_fetch_assoc($result_domisili)['total'] ?? 0;
+
+$sql_usaha = "SELECT COUNT(*) as total FROM pengajuan_usaha";
+$result_usaha = mysqli_query($conn, $sql_usaha);
+$usaha_count = mysqli_fetch_assoc($result_usaha)['total'] ?? 0;
+
+$sql_pindah = "SELECT COUNT(*) as total FROM pengajuan_pindah";
+$result_pindah = mysqli_query($conn, $sql_pindah);
+$pindah_count = mysqli_fetch_assoc($result_pindah)['total'] ?? 0;
+
+$sql_akta = "SELECT COUNT(*) as total FROM pengajuan_akta";
+$result_akta = mysqli_query($conn, $sql_akta);
+$akta_count = mysqli_fetch_assoc($result_akta)['total'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Kecamatan Digital</title>
+    <title>Dashboard - Kecamatan Kami</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
@@ -143,7 +149,7 @@ if (!$result_layanan) {
             <div class="d-flex align-items-center">
                 <span class="logo-header">🏛️</span>
                 <div>
-                    <h5 class="mb-0">Kecamatan Digital</h5>
+                    <h5 class="mb-0">Kecamatan Kami</h5>
                     <small class="text-muted">Layanan Administrasi Kependudukan</small>
                 </div>
             </div>
@@ -165,7 +171,7 @@ if (!$result_layanan) {
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="ktp.php">
-                        <i class="bi bi-card-heading"></i> index KTP
+                        <i class="bi bi-card-heading"></i>  KTP
                     </a>
                 </li>
                 <li class="nav-item">
@@ -193,34 +199,40 @@ if (!$result_layanan) {
 
         <!-- Hero Section -->
         <div class="hero-card">
-            <h2 class="text-primary mb-3">Selamat Datang di Portal Kecamatan</h2>
+            <h2 class="text-primary mb-3">Selamat Datang di Portal Kecamatan Kami</h2>
             <p class="lead">Kami menyediakan layanan administrasi kependudukan yang cepat, mudah, dan terpercaya untuk seluruh masyarakat</p>
         </div>
 
         <!-- Statistics -->
-        <div class="row g-3 mb-4">
-            <div class="col-md-3 col-sm-6">
+        <div class="row g-3 mb-4 justify-content-center">
+            <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="stat-card">
-                    <div class="stat-number"><?php echo number_format($penduduk); ?></div>
-                    <div class="text-muted">Total Penduduk Terdaftar</div>
+                    <div class="stat-number"><?php echo number_format($ktp_count); ?></div>
+                    <div class="text-muted">Pembuatan KTP</div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="stat-card">
-                    <div class="stat-number"><?php echo number_format($kk); ?></div>
-                    <div class="text-muted">Kartu Keluarga</div>
+                    <div class="stat-number"><?php echo number_format($domisili_count); ?></div>
+                    <div class="text-muted">Surat Domisili</div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="stat-card">
-                    <div class="stat-number"><?php echo number_format($layanan); ?></div>
-                    <div class="text-muted">Layanan Bulan Ini</div>
+                    <div class="stat-number"><?php echo number_format($usaha_count); ?></div>
+                    <div class="text-muted">Surat Usaha</div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-lg-2 col-md-3 col-sm-6">
                 <div class="stat-card">
-                    <div class="stat-number">98%</div>
-                    <div class="text-muted">Kepuasan</div>
+                    <div class="stat-number"><?php echo number_format($pindah_count); ?></div>
+                    <div class="text-muted">Pindah Alamat</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-number"><?php echo number_format($akta_count); ?></div>
+                    <div class="text-muted">Akta Kelahiran</div>
                 </div>
             </div>
         </div>
@@ -274,7 +286,7 @@ if (!$result_layanan) {
 
         <!-- Footer -->
         <footer class="footer">
-            <p class="mb-1">&copy; 2024 Kecamatan Digital | Melayani dengan Sepenuh Hati</p>
+            <p class="mb-1">  Kecamatan Kami | Melayani dengan Sepenuh Hati</p>
             <p class="mb-0 text-muted">Jam Operasional: Senin - Jumat, 08:00 - 16:00 WIB</p>
         </footer>
     </div>

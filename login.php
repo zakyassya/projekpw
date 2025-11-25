@@ -127,27 +127,14 @@ height: 100%;
         <?php endif; ?>
 
         <form method="POST" action="">
-          <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
-            <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
-              <i class="fab fa-facebook-f"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
-              <i class="fab fa-twitter"></i>
-            </button>
-            <button type="button" class="btn btn-primary btn-floating mx-1" disabled>
-              <i class="fab fa-linkedin-in"></i>
-            </button>
-          </div>
 
-          <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0">Or</p>
-          </div>
+
+
 
           <!-- Email/Username input -->
           <div class="form-outline mb-4">
             <input type="text" id="form3Example3" name="email_or_username" class="form-control form-control-lg"
-              placeholder="Enter username or email address" required autofocus
+              placeholder="Masukan Username" required autofocus
               value="<?= htmlspecialchars($_POST['email_or_username'] ?? '') ?>" />
             <label class="form-label" for="form3Example3">Email address or Username</label>
           </div>
@@ -155,7 +142,7 @@ height: 100%;
           <!-- Password input -->
           <div class="form-outline mb-3">
             <input type="password" id="form3Example4" name="password" class="form-control form-control-lg"
-              placeholder="Enter password" required />
+              placeholder="Masukan password" required />
             <label class="form-label" for="form3Example4">Password</label>
           </div>
 
@@ -167,12 +154,11 @@ height: 100%;
                 Remember me
               </label>
             </div>
-            <a href="#!" class="text-body">Forgot password?</a>
           </div>
 
           <div class="text-center text-lg-start mt-4 pt-2">
             <button type="submit" class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-            <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="register.php" class="link-danger">Register</a></p>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Belum punya akun?  <a href="register.php" class="link-primary">Register</a></p>
           </div>
         </form>
       </div>
@@ -182,26 +168,8 @@ height: 100%;
     class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
     <!-- Copyright -->
     <div class="text-white mb-3 mb-md-0">
-      Copyright © 2020. All rights reserved.
+      Kelurahan Kami.
     </div>
-    <!-- Copyright -->
-
-    <!-- Right -->
-    <div>
-      <a href="#!" class="text-white me-4">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="#!" class="text-white me-4">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="#!" class="text-white me-4">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="#!" class="text-white">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-    </div>
-    <!-- Right -->
   </div>
 </section>
 
