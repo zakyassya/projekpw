@@ -41,6 +41,77 @@ $pindah_count = mysqli_fetch_assoc($result_pindah)['total'] ?? 0;
 $sql_akta = "SELECT COUNT(*) as total FROM pengajuan_akta";
 $result_akta = mysqli_query($conn, $sql_akta);
 $akta_count = mysqli_fetch_assoc($result_akta)['total'] ?? 0;
+
+// Ambil pengajuan user saat ini
+$id_user = $_SESSION['user_id'] ?? null;
+$pengajuan_list = [];
+
+if ($id_user) {
+    // KTP
+    $sql_user_ktp = "SELECT 'KTP' as jenis, id, created_at, status FROM pengajuan_ktp WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_ktp);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_ktp = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_ktp)) {
+        $pengajuan_list[] = $row;
+    }
+
+    // Kartu Keluarga
+    $sql_user_kk = "SELECT 'Kartu Keluarga' as jenis, id, created_at, status FROM pengajuan_kk WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_kk);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_kk = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_kk)) {
+        $pengajuan_list[] = $row;
+    }
+
+    // Domisili
+    $sql_user_domisili = "SELECT 'Surat Domisili' as jenis, id, created_at, status FROM pengajuan_domisili WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_domisili);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_domisili = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_domisili)) {
+        $pengajuan_list[] = $row;
+    }
+
+    // Usaha
+    $sql_user_usaha = "SELECT 'Surat Usaha' as jenis, id, created_at, status FROM pengajuan_usaha WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_usaha);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_usaha = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_usaha)) {
+        $pengajuan_list[] = $row;
+    }
+
+    // Pindah Alamat
+    $sql_user_pindah = "SELECT 'Pindah Alamat' as jenis, id, created_at, status FROM pengajuan_pindah WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_pindah);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_pindah = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_pindah)) {
+        $pengajuan_list[] = $row;
+    }
+
+    // Akta Kelahiran
+    $sql_user_akta = "SELECT 'Akta Kelahiran' as jenis, id, created_at, status FROM pengajuan_akta WHERE user_id = ?";
+    $stmt = mysqli_prepare($conn, $sql_user_akta);
+    mysqli_stmt_bind_param($stmt, "i", $id_user);
+    mysqli_stmt_execute($stmt);
+    $result_akta = mysqli_stmt_get_result($stmt);
+    while ($row = mysqli_fetch_assoc($result_akta)) {
+        $pengajuan_list[] = $row;
+    }
+    
+    // Sort by tanggal terbaru
+    usort($pengajuan_list, function($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
+    });
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -234,6 +305,47 @@ $akta_count = mysqli_fetch_assoc($result_akta)['total'] ?? 0;
                     <div class="stat-number"><?php echo number_format($akta_count); ?></div>
                     <div class="text-muted">Akta Kelahiran</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Status Pengajuan User -->
+        <div class="card my-4" style="background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Status Pengajuan Anda</h4>
+            </div>
+            <div class="card-body">
+                <?php if (empty($pengajuan_list)): ?>
+                    <p class="text-muted">Tidak ada pengajuan surat saat ini.</p>
+                <?php else: ?>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Jenis Surat</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($pengajuan_list as $peng): ?>
+                                <tr>
+                                    <td><strong><?php echo htmlspecialchars($peng['jenis']); ?></strong></td>
+                                    <td><?php echo date('d-m-Y H:i', strtotime($peng['created_at'])); ?></td>
+                                    <td>
+                                        <span class="badge <?php 
+                                            $status = strtolower($peng['status']);
+                                            if ($status == 'selesai') echo 'bg-success';
+                                            elseif ($status == 'diproses') echo 'bg-info';
+                                            elseif ($status == 'ditolak') echo 'bg-danger';
+                                            else echo 'bg-warning';
+                                        ?>">
+                                            <?php echo ucfirst($peng['status']); ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
             </div>
         </div>
 
