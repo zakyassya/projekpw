@@ -11,16 +11,16 @@ $dir_ktp_ortu    = "uploads/ktp_ortu/";
 $dir_surat_nikah = "uploads/surat_nikah/";
 
 // pastikan folder upload ada
-foreach([$dir_surat_lahir, $dir_kk, $dir_ktp_ortu, $dir_surat_nikah] as $d){
-    if(!is_dir($d)) mkdir($d, 0755, true);
+foreach ([$dir_surat_lahir, $dir_kk, $dir_ktp_ortu, $dir_surat_nikah] as $d) {
+    if (!is_dir($d)) mkdir($d, 0755, true);
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // ambil data dari form
     $nama_anak    = clean_input($_POST['nama_anak']);
     $tempat_lahir = clean_input($_POST['tempat_lahir']);
-    $tanggal_lahir= clean_input($_POST['tanggal_lahir']);
-    $jenis_kelamin= clean_input($_POST['jenis_kelamin']);
+    $tanggal_lahir = clean_input($_POST['tanggal_lahir']);
+    $jenis_kelamin = clean_input($_POST['jenis_kelamin']);
     $anak_ke      = clean_input($_POST['anak_ke']);
     $nama_ayah    = clean_input($_POST['nama_ayah']);
     $nik_ayah     = clean_input($_POST['nik_ayah']);
@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $telepon      = clean_input($_POST['telepon']);
 
     // validasi
-    if(!$nama_anak || !$tempat_lahir || !$tanggal_lahir || !$jenis_kelamin || !$anak_ke || !$nama_ayah || !$nik_ayah || !$nama_ibu || !$nik_ibu || !$alamat || !$telepon){
+    if (!$nama_anak || !$tempat_lahir || !$tanggal_lahir || !$jenis_kelamin || !$anak_ke || !$nama_ayah || !$nik_ayah || !$nama_ibu || !$nik_ibu || !$alamat || !$telepon) {
         $errors[] = "Semua field wajib diisi.";
     }
 
@@ -42,27 +42,29 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         'file_surat_nikah' => $dir_surat_nikah
     ];
 
-    foreach($required_files as $f=>$dir){
-        if(!isset($_FILES[$f]) || $_FILES[$f]['error'] !== UPLOAD_ERR_OK){
-            $errors[] = "File ".str_replace("_"," ",$f)." belum dipilih atau terjadi error.";
+    foreach ($required_files as $f => $dir) {
+        if (!isset($_FILES[$f]) || $_FILES[$f]['error'] !== UPLOAD_ERR_OK) {
+            $errors[] = "File " . str_replace("_", " ", $f) . " belum dipilih atau terjadi error.";
         }
     }
 
-    if(empty($errors)){
+    if (empty($errors)) {
         $resFiles = [];
-        foreach($required_files as $f=>$dir){
+        foreach ($required_files as $f => $dir) {
             $resFiles[$f] = upload_file($_FILES[$f], $dir);
-            if(!$resFiles[$f]['success']) $errors[] = $resFiles[$f]['message'];
+            if (!$resFiles[$f]['success']) $errors[] = $resFiles[$f]['message'];
         }
 
-        if(empty($errors)){
+        if (empty($errors)) {
             $stmt = mysqli_prepare($conn, "
                 INSERT INTO pengajuan_akta
                 (user_id, nama_anak, tempat_lahir, tanggal_lahir, jenis_kelamin, anak_ke, nama_ayah, nik_ayah, nama_ibu, nik_ibu, alamat, telepon, file_surat_lahir, file_kk, file_ktp_ortu, file_surat_nikah)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ");
 
-            mysqli_stmt_bind_param($stmt, "issssissssssssss",
+            mysqli_stmt_bind_param(
+                $stmt,
+                "issssissssssssss",
                 $_SESSION['user_id'],
                 $nama_anak,
                 $tempat_lahir,
@@ -81,10 +83,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $resFiles['file_surat_nikah']['filename']
             );
 
-            if(mysqli_stmt_execute($stmt)){
+            if (mysqli_stmt_execute($stmt)) {
                 $pesan = "Pengajuan Akta Kelahiran berhasil dikirim.";
             } else {
-                $errors[] = "Gagal menyimpan ke database: ".mysqli_error($conn);
+                $errors[] = "Gagal menyimpan ke database: " . mysqli_error($conn);
             }
             mysqli_stmt_close($stmt);
         }
@@ -94,6 +96,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,31 +105,55 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 25px;
         }
+
         .form-container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
+
         .form-header {
             background: #0d6efd;
             color: white;
             padding: 30px;
             text-align: center;
         }
-        .form-header h2 { margin: 0; font-weight: 600; font-size: 1.8rem; }
-        .form-header p { margin: 5px 0 0; opacity: 0.9; font-size: 0.95rem; }
-        .form-body { padding: 30px; }
-        .form-section { margin-bottom: 30px; }
+
+        .form-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .form-header p {
+            margin: 5px 0 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
         .form-section h5 {
             color: #0d6efd;
             font-weight: 600;
@@ -134,13 +161,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding-bottom: 10px;
             border-bottom: 2px solid #f0f0f0;
         }
-        .form-group { margin-bottom: 15px; }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
         .form-group label {
             font-weight: 500;
             color: #333;
             margin-bottom: 8px;
             display: block;
         }
+
         .form-control {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -148,19 +180,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             font-size: 0.95rem;
             transition: all 0.3s;
         }
+
         .form-control:focus {
             border-color: #0d6efd;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
-        .form-text { font-size: 0.85rem; color: #666; margin-top: 5px; }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
+
         @media (max-width: 768px) {
-            .form-row { grid-template-columns: 1fr; }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
+
         .btn-submit {
             background: #0d6efd;
             color: white;
@@ -171,11 +214,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             width: 100%;
             transition: all 0.3s;
         }
+
         .btn-submit:hover {
             opacity: 0.95;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
             color: white;
         }
+
         .btn-back {
             background: #f8f9fa;
             color: #0d6efd;
@@ -188,11 +233,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             gap: 8px;
             transition: all 0.3s;
         }
+
         .btn-back:hover {
             background: #e9ecef;
             color: #0d6efd;
             text-decoration: none;
         }
+
         .alert-success {
             background: #d4edda;
             border: 1px solid #c3e6cb;
@@ -201,6 +248,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 12px 15px;
             margin-bottom: 20px;
         }
+
         .alert-danger {
             background: #f8d7da;
             border: 1px solid #f5c6cb;
@@ -209,13 +257,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 12px 15px;
             margin-bottom: 20px;
         }
-        .alert-danger ul { margin: 0; padding-left: 20px; }
-        .required { color: #dc3545; }
+
+        .alert-danger ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
         .file-upload-wrapper {
             position: relative;
             display: inline-block;
             width: 100%;
         }
+
         .file-upload-label {
             display: block;
             padding: 12px 15px;
@@ -226,14 +283,22 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .file-upload-label:hover {
             background: #e9ecef;
             border-color: #0d6efd;
         }
-        .file-upload-label i { margin-right: 8px; }
-        .form-body input[type="file"] { display: none; }
+
+        .file-upload-label i {
+            margin-right: 8px;
+        }
+
+        .form-body input[type="file"] {
+            display: none;
+        }
     </style>
 </head>
+
 <body>
     <div class="form-container">
         <div class="form-header">
@@ -242,18 +307,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
 
         <div class="form-body">
-            <?php if($pesan): ?>
+            <?php if ($pesan): ?>
                 <div class="alert-success">
                     <i class="bi bi-check-circle me-2"></i>
                     <strong>Berhasil!</strong> <?= htmlspecialchars($pesan) ?>
                 </div>
             <?php endif; ?>
 
-            <?php if($errors): ?>
+            <?php if ($errors): ?>
                 <div class="alert-danger">
                     <strong><i class="bi bi-exclamation-circle me-2"></i>Ada kesalahan:</strong>
                     <ul>
-                        <?php foreach($errors as $error): ?>
+                        <?php foreach ($errors as $error): ?>
                             <li><?= htmlspecialchars($error) ?></li>
                         <?php endforeach; ?>
                     </ul>
@@ -266,16 +331,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nama Anak <span class="required">*</span></label>
-                            <input type="text" name="nama_anak" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['nama_anak'] ?? '') ?>" 
+                            <input type="text" name="nama_anak" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['nama_anak'] ?? '') ?>"
                                 placeholder="Nama lengkap anak">
                         </div>
                         <div class="form-group">
                             <label>Jenis Kelamin <span class="required">*</span></label>
                             <select name="jenis_kelamin" class="form-control" required>
                                 <option value="">-- Pilih --</option>
-                                <option value="L" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='L') ? 'selected' : '' ?>>Laki-laki</option>
-                                <option value="P" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin']=='P') ? 'selected' : '' ?>>Perempuan</option>
+                                <option value="L" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin'] == 'L') ? 'selected' : '' ?>>Laki-laki</option>
+                                <option value="P" <?= (isset($_POST['jenis_kelamin']) && $_POST['jenis_kelamin'] == 'P') ? 'selected' : '' ?>>Perempuan</option>
                             </select>
                         </div>
                     </div>
@@ -286,21 +351,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-row">
                         <div class="form-group">
                             <label>Tempat Lahir <span class="required">*</span></label>
-                            <input type="text" name="tempat_lahir" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['tempat_lahir'] ?? '') ?>" 
+                            <input type="text" name="tempat_lahir" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['tempat_lahir'] ?? '') ?>"
                                 placeholder="Kota/Kabupaten">
                         </div>
                         <div class="form-group">
                             <label>Tanggal Lahir <span class="required">*</span></label>
-                            <input type="date" name="tanggal_lahir" class="form-control" required 
+                            <input type="date" name="tanggal_lahir" class="form-control" required
                                 value="<?= htmlspecialchars($_POST['tanggal_lahir'] ?? '') ?>">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Anak Ke <span class="required">*</span></label>
-                            <input type="number" name="anak_ke" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['anak_ke'] ?? '') ?>" 
+                            <input type="number" name="anak_ke" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['anak_ke'] ?? '') ?>"
                                 placeholder="1, 2, 3, dst">
                         </div>
                     </div>
@@ -311,28 +376,28 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nama Ayah <span class="required">*</span></label>
-                            <input type="text" name="nama_ayah" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['nama_ayah'] ?? '') ?>" 
+                            <input type="text" name="nama_ayah" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['nama_ayah'] ?? '') ?>"
                                 placeholder="Nama lengkap ayah">
                         </div>
                         <div class="form-group">
                             <label>NIK Ayah <span class="required">*</span></label>
-                            <input type="text" name="nik_ayah" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['nik_ayah'] ?? '') ?>" 
+                            <input type="text" name="nik_ayah" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['nik_ayah'] ?? '') ?>"
                                 placeholder="16 digit NIK">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nama Ibu <span class="required">*</span></label>
-                            <input type="text" name="nama_ibu" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['nama_ibu'] ?? '') ?>" 
+                            <input type="text" name="nama_ibu" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['nama_ibu'] ?? '') ?>"
                                 placeholder="Nama lengkap ibu">
                         </div>
                         <div class="form-group">
                             <label>NIK Ibu <span class="required">*</span></label>
-                            <input type="text" name="nik_ibu" class="form-control" required 
-                                value="<?= htmlspecialchars($_POST['nik_ibu'] ?? '') ?>" 
+                            <input type="text" name="nik_ibu" class="form-control" required
+                                value="<?= htmlspecialchars($_POST['nik_ibu'] ?? '') ?>"
                                 placeholder="16 digit NIK">
                         </div>
                     </div>
@@ -342,13 +407,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <h5><i class="bi bi-house me-2"></i>Alamat & Kontak</h5>
                     <div class="form-group">
                         <label>Alamat <span class="required">*</span></label>
-                        <textarea name="alamat" class="form-control" rows="3" required 
+                        <textarea name="alamat" class="form-control" rows="3" required
                             placeholder="Jl. / No. RT/RW / Desa / Kota"><?= htmlspecialchars($_POST['alamat'] ?? '') ?></textarea>
                     </div>
                     <div class="form-group">
                         <label>No. Telepon <span class="required">*</span></label>
-                        <input type="tel" name="telepon" class="form-control" required 
-                            value="<?= htmlspecialchars($_POST['telepon'] ?? '') ?>" 
+                        <input type="tel" name="telepon" class="form-control" required
+                            value="<?= htmlspecialchars($_POST['telepon'] ?? '') ?>"
                             placeholder="0812345678">
                     </div>
                 </div>
@@ -414,4 +479,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -15,6 +15,7 @@ if (!is_admin()) {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,26 +25,42 @@ if (!is_admin()) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             background: #f8f9fa;
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .admin-navbar {
             background: #0d6efd;
             border-bottom: 3px solid #0d6efd;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 15px 25px;
         }
-        .admin-navbar .navbar-brand { font-size: 1.5rem; font-weight: 600; color: white; }
-        .admin-container { padding: 25px; }
+
+        .admin-navbar .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .admin-container {
+            padding: 25px;
+        }
+
         .admin-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border: none;
         }
+
         .admin-card-header {
             background: #0d6efd;
             color: white;
@@ -51,13 +68,16 @@ if (!is_admin()) {
             padding: 20px;
             border: none;
         }
+
         .table-container {
             padding: 20px;
             overflow-x: auto;
         }
+
         .table {
             margin-bottom: 0;
         }
+
         .table thead th {
             background: #f8f9fa;
             color: #0d6efd;
@@ -65,28 +85,60 @@ if (!is_admin()) {
             border-bottom: 2px solid #0d6efd;
             padding: 12px;
         }
+
         .table tbody td {
             padding: 12px;
             vertical-align: middle;
         }
+
         .table tbody tr:hover {
             background: #f8f9fa;
         }
+
         .badge-status {
             font-weight: 500;
             padding: 6px 12px;
         }
+
         .btn-action {
             font-size: 0.85rem;
             padding: 5px 10px;
             border-radius: 6px;
         }
-        .btn-view { background: #0dcaf0; color: white; border: none; }
-        .btn-view:hover { background: #0bb5d4; color: white; }
-        .btn-edit { background: #ffc107; color: #333; border: none; }
-        .btn-edit:hover { background: #ffb700; color: #333; }
-        .btn-delete { background: #dc3545; color: white; border: none; }
-        .btn-delete:hover { background: #bb2d3b; color: white; }
+
+        .btn-view {
+            background: #0dcaf0;
+            color: white;
+            border: none;
+        }
+
+        .btn-view:hover {
+            background: #0bb5d4;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #333;
+            border: none;
+        }
+
+        .btn-edit:hover {
+            background: #ffb700;
+            color: #333;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            background: #bb2d3b;
+            color: white;
+        }
+
         .top-bar {
             background: white;
             padding: 15px 25px;
@@ -95,22 +147,33 @@ if (!is_admin()) {
             align-items: center;
             border-radius: 12px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .top-bar h4 { margin: 0; color: #0d6efd; }
+
+        .top-bar h4 {
+            margin: 0;
+            color: #0d6efd;
+        }
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .btn-logout {
             background: #0d6efd;
             border: none;
             color: white;
         }
-        .btn-logout:hover { background: #0b5ed7; color: white; }
+
+        .btn-logout:hover {
+            background: #0b5ed7;
+            color: white;
+        }
     </style>
 </head>
+
 <body>
     <!-- Admin Navbar -->
     <nav class="admin-navbar">
@@ -134,7 +197,7 @@ if (!is_admin()) {
             <h4><i class="bi bi-table me-2"></i>Daftar Pengajuan</h4>
             <div class="user-info">
                 <span class="text-muted">
-                    <i class="bi bi-person-circle"></i> 
+                    <i class="bi bi-person-circle"></i>
                     <strong><?= htmlspecialchars($_SESSION['nama_lengkap'] ?? 'Admin') ?></strong>
                 </span>
                 <a href="../logout.php" class="btn btn-sm btn-logout">
@@ -168,7 +231,7 @@ if (!is_admin()) {
                             $tables = [
                                 'pengajuan_ktp'       => 'KTP Elektronik',
                                 'pengajuan_kk'        => 'Kartu Keluarga',
-                                'pengajuan_pindah'    => 'Pindah Datang',
+                                'pengajuan_pindah'    => 'Pindah Alamat',
                                 'pengajuan_domisili'  => 'Surat Domisili',
                                 'pengajuan_akta'      => 'Akta Kelahiran',
                                 'pengajuan_usaha'     => 'Surat Usaha'
@@ -185,16 +248,14 @@ if (!is_admin()) {
 
                                 while ($row = mysqli_fetch_assoc($res)) {
                                     $status = $row['status'] ?? 'pending';
-                                    $badge_class = $status === 'selesai' ? 'bg-success' :
-                                                  ($status === 'ditolak' ? 'bg-danger' :
-                                                  ($status === 'diproses' ? 'bg-info' : 'bg-warning'));
+                                    $badge_class = $status === 'selesai' ? 'bg-success' : ($status === 'ditolak' ? 'bg-danger' : ($status === 'diproses' ? 'bg-info' : 'bg-warning'));
 
                                     echo "<tr>
                                         <td><strong>$no</strong></td>
                                         <td><span class='fw-bold' style='color: #0d6efd;'>$nama</span></td>
                                         <td>" . htmlspecialchars($row['nama_lengkap'] ?? 'User dihapus') . "</td>
                                         <td>" . date('d-m-Y H:i', strtotime($row['created_at'])) . "</td>
-                                        <td><span class='badge badge-status $badge_class'>".ucfirst($status)."</span></td>
+                                        <td><span class='badge badge-status $badge_class'>" . ucfirst($status) . "</span></td>
                                         <td>
                                             <a href='detail.php?id={$row['id']}&tbl=$tbl' class='btn btn-action btn-view' title='Lihat Detail'>
                                                 <i class='bi bi-eye me-1'></i>Lihat
@@ -222,4 +283,5 @@ if (!is_admin()) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

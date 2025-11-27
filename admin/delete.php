@@ -75,4 +75,3 @@ if (mysqli_stmt_execute($delete_stmt)) {
     header("Location: index.php?error=Gagal menghapus data");
 }
 exit();
-?>

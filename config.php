@@ -20,7 +20,8 @@ if (!$conn) {
 mysqli_set_charset($conn, "utf8");
 
 // Fungsi untuk mencegah SQL Injection
-function clean_input($data) {
+function clean_input($data)
+{
     global $conn;
     $data = trim($data);
     $data = stripslashes($data);
@@ -30,17 +31,20 @@ function clean_input($data) {
 }
 
 // Fungsi untuk cek login
-function is_logged_in() {
+function is_logged_in()
+{
     return isset($_SESSION['user_id']);
 }
 
 // Fungsi untuk cek role admin
-function is_admin() {
+function is_admin()
+{
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
 // Fungsi redirect jika belum login
-function require_login() {
+function require_login()
+{
     if (!is_logged_in()) {
         header("Location: login.php");
         exit();
@@ -48,22 +52,23 @@ function require_login() {
 }
 
 // Fungsi untuk upload file
-function upload_file($file, $target_dir = "../uploads/") {
+function upload_file($file, $target_dir = "../uploads/")
+{
     $target_file = $target_dir . time() . "_" . basename($file["name"]);
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    
+
     // Cek apakah file adalah gambar atau PDF
     $allowed_types = array('jpg', 'jpeg', 'png', 'pdf');
-    
+
     if (!in_array($imageFileType, $allowed_types)) {
         return array('success' => false, 'message' => 'Hanya file JPG, JPEG, PNG, dan PDF yang diperbolehkan.');
     }
-    
+
     // Cek ukuran file (max 2MB)
     if ($file["size"] > 2000000) {
         return array('success' => false, 'message' => 'Ukuran file terlalu besar. Maksimal 2MB.');
     }
-    
+
     // Upload file
     if (move_uploaded_file($file["tmp_name"], $target_file)) {
         return array('success' => true, 'filename' => basename($target_file));
@@ -71,4 +76,3 @@ function upload_file($file, $target_dir = "../uploads/") {
         return array('success' => false, 'message' => 'Terjadi kesalahan saat mengupload file.');
     }
 }
-?>

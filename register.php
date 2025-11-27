@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirm_password = $_POST['confirm_password'];
     $nama_lengkap = clean_input($_POST['nama_lengkap']);
     $email = clean_input($_POST['email']);
-    
+
     // Validasi
     if (empty($username) || empty($password) || empty($nama_lengkap)) {
         $error = "Semua field wajib diisi!";
@@ -25,18 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_stmt_bind_param($stmt, "s", $username);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_store_result($stmt);
-        
+
         if (mysqli_stmt_num_rows($stmt) > 0) {
             $error = "Username sudah terdaftar!";
         } else {
             // Hash password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            
+
             // Insert ke database
             $sql = "INSERT INTO users (username, password, nama_lengkap, email, role) VALUES (?, ?, ?, ?, 'user')";
             $stmt = mysqli_prepare($conn, $sql);
             mysqli_stmt_bind_param($stmt, "ssss", $username, $hashed_password, $nama_lengkap, $email);
-            
+
             if (mysqli_stmt_execute($stmt)) {
                 $success = "Pendaftaran berhasil! Silakan login.";
             } else {
@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,15 +59,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        section { min-height: 100vh; display: flex; flex-direction: column; }
-        .container-fluid { flex: 1; }
-        .h-custom { height: calc(100% - 73px); }
-        @media (max-width: 450px) { .h-custom { height: 100%; } }
-        img.img-fluid { max-height: 400px; object-fit: contain; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container-fluid {
+            flex: 1;
+        }
+
+        .h-custom {
+            height: calc(100% - 73px);
+        }
+
+        @media (max-width: 450px) {
+            .h-custom {
+                height: 100%;
+            }
+        }
+
+        img.img-fluid {
+            max-height: 400px;
+            object-fit: contain;
+        }
     </style>
 </head>
+
 <body>
     <section>
         <div class="container-fluid h-custom">
@@ -155,4 +184,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -106,15 +106,16 @@ if ($id_user) {
     while ($row = mysqli_fetch_assoc($result_akta)) {
         $pengajuan_list[] = $row;
     }
-    
+
     // Sort by tanggal terbaru
-    usort($pengajuan_list, function($a, $b) {
+    usort($pengajuan_list, function ($a, $b) {
         return strtotime($b['created_at']) - strtotime($a['created_at']);
     });
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,24 +128,28 @@ if ($id_user) {
             min-height: 100vh;
             padding: 20px;
         }
+
         .navbar-custom {
             background: white;
             border-radius: 15px;
             padding: 15px 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
+
         .logo-header {
             font-size: 30px;
             margin-right: 15px;
         }
+
         .nav-menu {
             background: white;
             border-radius: 15px;
             padding: 10px 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
+
         .nav-menu .nav-link {
             color: #0d6efd;
             font-weight: 600;
@@ -152,36 +157,42 @@ if ($id_user) {
             border-radius: 8px;
             transition: all 0.3s;
         }
+
         .nav-menu .nav-link:hover,
         .nav-menu .nav-link.active {
             background: #0d6efd;
             color: white;
         }
+
         .hero-card {
             background: white;
             border-radius: 15px;
             padding: 40px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin-bottom: 30px;
         }
+
         .stat-card {
             background: white;
             border-radius: 15px;
             padding: 25px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(13, 110, 253, 0.3);
         }
+
         .stat-number {
             font-size: 36px;
             font-weight: bold;
             color: #0d6efd;
         }
+
         .service-card {
             background: white;
             border-radius: 15px;
@@ -191,28 +202,32 @@ if ($id_user) {
             color: #333;
             display: block;
             transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
+
         .service-card:hover {
             transform: translateY(-10px);
             background: #0d6efd;
             color: white;
             box-shadow: 0 15px 40px rgba(13, 110, 253, 0.3);
         }
+
         .service-icon {
             font-size: 50px;
             margin-bottom: 15px;
         }
+
         .footer {
             background: white;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             margin-top: 30px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header -->
@@ -242,7 +257,7 @@ if ($id_user) {
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="ktp.php">
-                        <i class="bi bi-card-heading"></i>  KTP
+                        <i class="bi bi-card-heading"></i> KTP
                     </a>
                 </li>
                 <li class="nav-item">
@@ -331,13 +346,13 @@ if ($id_user) {
                                     <td><strong><?php echo htmlspecialchars($peng['jenis']); ?></strong></td>
                                     <td><?php echo date('d-m-Y H:i', strtotime($peng['created_at'])); ?></td>
                                     <td>
-                                        <span class="badge <?php 
-                                            $status = strtolower($peng['status']);
-                                            if ($status == 'selesai') echo 'bg-success';
-                                            elseif ($status == 'diproses') echo 'bg-info';
-                                            elseif ($status == 'ditolak') echo 'bg-danger';
-                                            else echo 'bg-warning';
-                                        ?>">
+                                        <span class="badge <?php
+                                                            $status = strtolower($peng['status']);
+                                                            if ($status == 'selesai') echo 'bg-success';
+                                                            elseif ($status == 'diproses') echo 'bg-info';
+                                                            elseif ($status == 'ditolak') echo 'bg-danger';
+                                                            else echo 'bg-warning';
+                                                            ?>">
                                             <?php echo ucfirst($peng['status']); ?>
                                         </span>
                                     </td>
@@ -398,11 +413,12 @@ if ($id_user) {
 
         <!-- Footer -->
         <footer class="footer">
-            <p class="mb-1">  Kecamatan Kami | Melayani dengan Sepenuh Hati</p>
+            <p class="mb-1"> Kecamatan Kami | Melayani dengan Sepenuh Hati</p>
             <p class="mb-0 text-muted">Jam Operasional: Senin - Jumat, 08:00 - 16:00 WIB</p>
         </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

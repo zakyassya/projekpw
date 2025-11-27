@@ -17,8 +17,19 @@ if (empty($file)) {
 $file = basename($file);
 
 // Daftar folder uploads yang diizinkan
-$allowed_dirs = ['ktp', 'kk', 'surat_lahir', 'ktp_kepala', 'kk_lama', 'surat_nikah', 'ktp_ortu', 
-                 'foto', 'foto_usaha', 'surat_pengantar', 'surat_pernyataan'];
+$allowed_dirs = [
+    'ktp',
+    'kk',
+    'surat_lahir',
+    'ktp_kepala',
+    'kk_lama',
+    'surat_nikah',
+    'ktp_ortu',
+    'foto',
+    'foto_usaha',
+    'surat_pengantar',
+    'surat_pernyataan'
+];
 
 // Cari file di folder-folder uploads
 $file_path = null;
@@ -46,4 +57,3 @@ header('Content-Length: ' . filesize($file_path));
 
 readfile($file_path);
 exit();
-?>
